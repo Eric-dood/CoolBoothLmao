@@ -7,5 +7,8 @@ using namespace std;
 
 int main()
 {
+    deque<Car> carList;
+    for (int i = 0; i < NR_MANUFACTURERS; i++)
+        carList.push_back(Car());
     return 0;
 }
