@@ -7,6 +7,8 @@
 #include <ctime>
 using namespace std;
 
+void printQueue(deque<Car> q);
+
 int main()
 {
     //Include the random seed generator
@@ -18,21 +20,44 @@ int main()
     carList.push_front(Car());
     //Print the queue
     cout << "Initial queue:" << endl;
-    for (int i = 0; i < carList.size(); i++)
-    {
-        cout << setw(5);
-        carList[i].print();
-    }
+    printQueue(carList);
     //Start the loop where cars are being paid or joining lanes
     int i = 0;
-    while(!carList.empty() && i < 50)
+    //Do a while loop until the queue list is empty
+    while(!carList.empty() && ++i)
     {
-        Car newCar = Car();
-        string str = "Test";
-        cout << "Time: " << i++ << " Operation: " << str << ": ";
-        newCar.print();
-        cout << endl;
+        //Do a random check to either join a lane or pay a car
+        if (!(rand() % 2))
+        {
+            Car newCar = Car();
+            cout << "Time: " << i << " Operation: Joined lane: ";
+            newCar.print();
+            carList.push_back(newCar);
+        }
+        else
+        {
+            Car oldCar = carList.front();
+            cout << "Time: " << i << " Operation: Car paid: ";
+            oldCar.print();
+            carList.pop_front();
+        }
+        cout << "Queue:" << endl;
+        printQueue(carList);
     }
 
     return 0;
+}
+
+void printQueue(deque<Car> q)
+{
+    if (q.empty()) cout << setw(10) << "Empty.";
+    else
+    {
+        for (int i = 0; i < q.size(); i++)
+        {
+            cout << setw(5);
+            q[i].print();
+        }
+    }
+    cout << endl;
 }
