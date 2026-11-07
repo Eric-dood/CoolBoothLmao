@@ -8,7 +8,19 @@ using namespace std;
 int main()
 {
     deque<Car> carList;
-    for (int i = 0; i < NR_MANUFACTURERS; i++)
-        carList.push_back(Car());
+    //Start the initial queue
+    carList.push_back(Car());
+    carList.push_front(Car());
+    cout << "Initial queue:" << endl;
+    for (int i = 0; i < carList.size(); i++)
+    {
+        cout << setw(5);
+        carList[i].print();
+    }
+    while(!carList.empty())
+    {
+        
+    }
+
     return 0;
 }
