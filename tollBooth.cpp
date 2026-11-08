@@ -37,9 +37,10 @@ int main()
     //Start the loop where cars are being paid or joining lanes
     //But first, define the count and choice variables
     int count = 0, choice = 0;
-    bool empty = false;
+    int empty = 0;
+    bool lane_emptied[MAX_LANES];
     //Do a while loop until the queue list is empty
-    while (++count <= 20 && !empty)
+    while (++count <= 20 && (empty < MAX_LANES))
     {
         cout << "Time: " << count << endl;
         for (int i = 0; i < MAX_LANES; i++)
@@ -52,36 +53,53 @@ int main()
                 //Do a random check to either join a lane or pay a car
                 if (choice <= PAID_CHANCE) //Cars paid (46% chance)
                 {
-                    cout << "Paid: ";
                     //Define oldCar, which is the front element from the deque list
                     Car oldCar = carList[i].front();
                     //Print the information
+                    cout << "Paid: ";
                     oldCar.print();
                     //Use pop_front to remove the front element from the list
                     carList[i].pop_front();
                 }
                 else if (choice > PAID_CHANCE && choice <= (100-JOIN_CHANCE)) //Joining lanes (39% chance)
                 {
-                    cout << "Joined: ";
                     //Define newCar, which is a new car that'll be added to the deque list
                     Car newCar = Car();
                     //Print the information
-                    cout << "Time: " << count << " Operation: Joined lane: ";
+                    cout << "Joined: ";
                     newCar.print();
                     //Use push_back to add the new car to the list
                     carList[i].push_back(newCar);
                 }
-                else //Shifting lanes
+                else //Switching lanes
                 {
-                    cout << "Shifted: ";
+                    cout << "Switched: ";
+                    Car shiftCar = carList[i].back();
+                    int lane;
+                    while (lane != i)
+                    {
+                        lane = rand() % MAX_LANES;
+                        carList[lane].push_back(shiftCar);
+                        carList[i].pop_back();
+                        break;
+                    }
                 }
             }
-            else cout << "Empty" << endl;
+            else
+            {
+                if (!lane_emptied[i])
+                {
+                    empty += 1;
+                    lane_emptied[i] = true;
+                }
+                cout << "Empty" << endl;
+            }
             //Leave extra space
         }
 
         //Print the current queue list
-        printQueue(carList);
+        if (empty < MAX_LANES) printQueue(carList);
+        else cout << "All lanes have been emptied." << endl;
     }
 
     return 0;
@@ -94,7 +112,7 @@ void printQueue(deque<Car> q[], int size)
     {
         cout << "Lane " << i+1 << " Queue:" << endl;
         //If the queue list is empty, just print out "Empty" to signify the empty list
-        if (q[i].empty()) cout << setw(10) << "Empty.";
+        if (q[i].empty()) cout << setw(10) << "Empty." << endl;
         //Otherwise go through the entirety of the list and print it as usual
         else
         {
