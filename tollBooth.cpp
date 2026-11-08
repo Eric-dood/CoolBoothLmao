@@ -82,7 +82,7 @@ void printQueue(deque<Car> q[], int size = MAX_LANES)
         else
         {
             //Use a range-based loop to go through all of the cars from the queue
-            for (int j = 0; j < q[i].size(); j++)
+            for (auto j : q[i])
             {
                 //Use setw() to leave in some small space after each car
                 cout << setw(5);
