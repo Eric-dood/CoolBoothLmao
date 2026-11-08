@@ -7,8 +7,11 @@
 #include <ctime>
 using namespace std;
 
+//Global constants
+const int MAX_LANES = 4;
+
 //Function prototypes
-void printQueue(deque<Car> q);
+void printQueue(deque<Car> q[], int size = MAX_LANES);
 /*
 Specifically the printQueue() function because it's used twice in main(), I wanted to have
 some versatility in the code a little just in case.
@@ -20,10 +23,13 @@ int main()
     //Include the random seed generator
     srand(time(0));
     //Declare the car deque lsit
-    deque<Car> carList;
+    deque<Car> carList[4];
     //Start the initial queue
-    carList.push_back(Car());
-    carList.push_front(Car());
+    for (int i = 0; i < MAX_LANES; i++)
+    {
+        carList[i].push_back(Car());
+        carList[i].push_front(Car());
+    }
     //Print the queue
     cout << "Initial queue:" << endl;
     printQueue(carList);
@@ -65,7 +71,7 @@ int main()
 }
 
 //Define printQueue()
-void printQueue(deque<Car> q)
+void printQueue(deque<Car> q[], int size = MAX_LANES)
 {
     //If the queue list is empty, just print out "Empty" to signify the empty list
     if (q.empty()) cout << setw(10) << "Empty.";
