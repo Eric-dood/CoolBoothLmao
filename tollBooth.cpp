@@ -9,6 +9,7 @@ using namespace std;
 
 //Global constants
 const int MAX_LANES = 4;
+const int PAID_CHANCE = 46, JOIN_CHANCE = 39, SHIFT_CHANCE = 15;
 
 //Function prototypes
 void printQueue(deque<Car> q[], int size = MAX_LANES);
@@ -41,15 +42,27 @@ int main()
     while (++count <= 20 && !empty)
     {
         cout << "Time: " << count << endl;
-        for (int i = 0; i <= MAX_LANES; i++)
+        for (int i = 0; i < MAX_LANES; i++)
         {
+            cout << "Lane " << i+1 << ": ";
             if (!carList[i].empty())
             {
                 //Set the choice variable to be between 0 and 100 (inclusive)
                 choice = (rand() % 101);
                 //Do a random check to either join a lane or pay a car
-                if (choice <= 45) //Joining lanes (45% chance)
+                if (choice <= PAID_CHANCE) //Cars paid (46% chance)
                 {
+                    cout << "Paid: ";
+                    //Define oldCar, which is the front element from the deque list
+                    Car oldCar = carList[i].front();
+                    //Print the information
+                    oldCar.print();
+                    //Use pop_front to remove the front element from the list
+                    carList[i].pop_front();
+                }
+                else if (choice > PAID_CHANCE && choice <= (100-JOIN_CHANCE)) //Joining lanes (39% chance)
+                {
+                    cout << "Joined: ";
                     //Define newCar, which is a new car that'll be added to the deque list
                     Car newCar = Car();
                     //Print the information
@@ -58,16 +71,13 @@ int main()
                     //Use push_back to add the new car to the list
                     carList[i].push_back(newCar);
                 }
-                else //Cars paid (55% chance)
+                else //Shifting lanes
                 {
-                    //Define oldCar, which is the front element from the deque list
-                    Car oldCar = carList[i].front();
-                    //Print the information
-                    oldCar.print();
-                    //Use pop_front to remove the front element from the list
-                    carList[i].pop_front();
+                    cout << "Shifted: ";
                 }
             }
+            else cout << "Empty" << endl;
+            //Leave extra space
         }
 
         //Print the current queue list
@@ -80,9 +90,9 @@ int main()
 //Define printQueue()
 void printQueue(deque<Car> q[], int size)
 {
-    for (int i = 0; i <= size; i++)
+    for (int i = 0; i < size; i++)
     {
-        cout << "Lane " << i << ":" << endl;
+        cout << "Lane " << i+1 << " Queue:" << endl;
         //If the queue list is empty, just print out "Empty" to signify the empty list
         if (q[i].empty()) cout << setw(10) << "Empty.";
         //Otherwise go through the entirety of the list and print it as usual
@@ -97,7 +107,7 @@ void printQueue(deque<Car> q[], int size)
                 j.print();
             }
         }
-        //Leave extra space
-        cout << endl;
     }
+    //Leave extra space
+    cout << endl;
 }
