@@ -1,0 +1,1 @@
+!carList[i].empty() && 
