@@ -12,6 +12,8 @@ const int MAX_LANES = 4;
 const int PAID_CHANCE = 46, JOIN_CHANCE = 39, SHIFT_CHANCE = 15;
 
 //Function prototypes
+void addLaneQueue(deque<Car> &q);
+void payCarQueue(deque<Car> &q);
 void printQueue(deque<Car> q[], int size = MAX_LANES);
 /*
 Specifically the printQueue() function because it's used twice in main(), I wanted to have
@@ -46,10 +48,10 @@ int main()
         for (int i = 0; i < MAX_LANES; i++)
         {
             cout << "Lane " << i+1 << ": ";
+            //Set the choice variable to be between 0 and 100 (inclusive)
+            choice = (rand() % 101);
             if (!carList[i].empty())
             {
-                //Set the choice variable to be between 0 and 100 (inclusive)
-                choice = (rand() % 101);
                 //Do a random check to either join a lane or pay a car
                 if (choice <= PAID_CHANCE) //Cars paid (46% chance)
                 {
@@ -61,7 +63,7 @@ int main()
                     //Use pop_front to remove the front element from the list
                     carList[i].pop_front();
                 }
-                else if (choice > PAID_CHANCE && choice <= (100-JOIN_CHANCE)) //Joining lanes (39% chance)
+                else if (choice > PAID_CHANCE && choice <= (PAID_CHANCE+JOIN_CHANCE)) //Joining lanes (39% chance)
                 {
                     //Define newCar, which is a new car that'll be added to the deque list
                     Car newCar = Car();
@@ -73,9 +75,14 @@ int main()
                 }
                 else //Switching lanes
                 {
-                    cout << "Switched: ";
+                    //Define the shiftCar
                     Car shiftCar = carList[i].back();
+                    //Print the information
+                    cout << "Switched: ";
+                    shiftCar.print();
+                    //Define lane, which will be a random integer based on the amount of lanes
                     int lane;
+                    //Make sure for the new lane to not have the same number as the old one
                     while (lane != i)
                     {
                         lane = rand() % MAX_LANES;
@@ -87,12 +94,18 @@ int main()
             }
             else
             {
-                if (!lane_emptied[i])
+                if (choice < 50) //
+                    cout << "Empty" << endl;
+                else
                 {
-                    empty += 1;
-                    lane_emptied[i] = true;
+                    //Define newCar, which is a new car that'll be added to the deque list
+                    Car newCar = Car();
+                    //Print the information
+                    cout << "Joined: ";
+                    newCar.print();
+                    //Use push_back to add the new car to the list
+                    carList[i].push_back(newCar);
                 }
-                cout << "Empty" << endl;
             }
             //Leave extra space
         }
