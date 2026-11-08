@@ -73,20 +73,24 @@ int main()
 //Define printQueue()
 void printQueue(deque<Car> q[], int size = MAX_LANES)
 {
-    //If the queue list is empty, just print out "Empty" to signify the empty list
-    if (q.empty()) cout << setw(10) << "Empty.";
-    //Otherwise go through the entirety of the list and print it as usual
-    else
+    for (int i = 0; i < size; i++)
     {
-        //Use a range-based loop to go through all of the cars from the queue
-        for (int i = 0; i < q.size(); i++)
+        cout << "Lane " << i << ":" << endl;
+        //If the queue list is empty, just print out "Empty" to signify the empty list
+        if (q[i].empty()) cout << setw(10) << "Empty.";
+        //Otherwise go through the entirety of the list and print it as usual
+        else
         {
-            //Use setw() to leave in some small space after each car
-            cout << setw(5);
-            //Print the element
-            q[i].print();
+            //Use a range-based loop to go through all of the cars from the queue
+            for (int j = 0; j < q[i].size(); j++)
+            {
+                //Use setw() to leave in some small space after each car
+                cout << setw(5);
+                //Print the element
+                q[i].print();
+            }
         }
+        //Leave extra space
+        cout << endl;
     }
-    //Leave extra space
-    cout << endl;
 }
