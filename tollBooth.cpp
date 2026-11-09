@@ -54,25 +54,9 @@ int main()
             {
                 //Do a random check to either join a lane or pay a car
                 if (choice <= PAID_CHANCE) //Cars paid (46% chance)
-                {
-                    //Define oldCar, which is the front element from the deque list
-                    Car oldCar = carList[i].front();
-                    //Print the information
-                    cout << "Paid: ";
-                    oldCar.print();
-                    //Use pop_front to remove the front element from the list
-                    carList[i].pop_front();
-                }
+                    payCarQueue(carList[i]);
                 else if (choice > PAID_CHANCE && choice <= (PAID_CHANCE+JOIN_CHANCE)) //Joining lanes (39% chance)
-                {
-                    //Define newCar, which is a new car that'll be added to the deque list
-                    Car newCar = Car();
-                    //Print the information
-                    cout << "Joined: ";
-                    newCar.print();
-                    //Use push_back to add the new car to the list
-                    carList[i].push_back(newCar);
-                }
+                    addLaneQueue(carList[i]);
                 else //Switching lanes
                 {
                     //Define the shiftCar
@@ -98,17 +82,8 @@ int main()
                 if (choice < 50) //50% for the lane to stay vacant
                     cout << "Empty" << endl;
                 else //50% for the lane to have a car joined
-                {
-                    //Define newCar, which is a new car that'll be added to the deque list
-                    Car newCar = Car();
-                    //Print the information
-                    cout << "Joined: ";
-                    newCar.print();
-                    //Use push_back to add the new car to the list
-                    carList[i].push_back(newCar);
-                }
+                    addLaneQueue(carList[i]);
             }
-            //Leave extra space
         }
 
         //Print the current queue list
@@ -117,6 +92,30 @@ int main()
     }
 
     return 0;
+}
+
+//Define addLaneQueue()
+void addLaneQueue(deque<Car> &q)
+{
+    //Define newCar, which is a new car that'll be added to the deque list
+    Car newCar = Car();
+    //Print the information
+    cout << "Joined: ";
+    newCar.print();
+    //Use push_back to add the new car to the list
+    q.push_back(newCar);
+}
+
+//Define payCarQueue()
+void payCarQueue(deque<Car> &q)
+{
+    //Define oldCar, which is the front element from the deque list
+    Car oldCar = q.front();
+    //Print the information
+    cout << "Paid: ";
+    oldCar.print();
+    //Use pop_front to remove the front element from the list
+    q.pop_front();
 }
 
 //Define printQueue()
