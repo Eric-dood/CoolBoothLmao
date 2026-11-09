@@ -94,9 +94,10 @@ int main()
             }
             else
             {
-                if (choice < 50) //
+                //If the lane is empty, there is a 50/50 chance for cars to be added to the empty lane.
+                if (choice < 50) //50% for the lane to stay vacant
                     cout << "Empty" << endl;
-                else
+                else //50% for the lane to have a car joined
                 {
                     //Define newCar, which is a new car that'll be added to the deque list
                     Car newCar = Car();
